@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Головна сторінка</title>
+</head>
+<body>
+
+    <h1>Головна сторінка магазину</h1>
+
+    <p>Оберіть сторінку:</p>
+
+    <ul>
+        {% for page in pages %}
+            <li>
+                <a href="{{ page.url }}">{{ page.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>

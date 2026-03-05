@@ -14,6 +14,7 @@
     <a class="navbar-brand" href="{% url 'home' %}">Zenvix</a>
     <div class="navbar-nav">
       <a class="nav-link" href="{% url 'home' %}">Головна</a>
+      <a class="nav-link" href="{% url 'categories' %}">Категорії</a>
       {% for category in categories %}
         <a class="nav-link" href="{% url 'category' category.id %}">{{ category.name }}</a>
       {% endfor %}

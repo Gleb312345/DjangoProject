@@ -1,13 +1,18 @@
 from django.shortcuts import render
+from .models import Product, Category
 
 def home(request):
-    pages = [
-        {"name": "Товари", "url": "products"},
-        {"name": "Про нас", "url": "about"},
-        {"name": "Контакти", "url": "contacts"},
-    ]
-    return render(request, "shop/home.html", {"pages": pages})
+    products = Product.objects.all().prefetch_related('images')
+    categories = Category.objects.all()
+    return render(request, "shop/home.html", {
+        "products": products,
+        "categories": categories
+    })
 
-
-def page(request, title):
-    return render(request, "shop/page.html", {"title": title})
+def category_view(request, id):
+    products = Product.objects.filter(category_id=id).prefetch_related('images')
+    categories = Category.objects.all()
+    return render(request, "shop/home.html", {
+        "products": products,
+        "categories": categories
+    })

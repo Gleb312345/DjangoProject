@@ -1,0 +1,29 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="row">
+  {% for product in products %}
+    <div class="col-md-4 mb-4">
+      <div class="card text-bg-dark">
+        {% if product.images.all %}
+          <img src="{{ product.images.all.0.image.url }}" class="card-img" alt="{{ product.name }}">
+        {% else %}
+          <img src="{% static 'img/default.jpg' %}" class="card-img" alt="No image">
+        {% endif %}
+
+        <div class="card-img-overlay d-flex flex-column justify-content-end bg-dark bg-opacity-50">
+          <h5>{{ product.name }}</h5>
+          {% if product.description %}
+            <p>{{ product.description }}</p>
+          {% endif %}
+          <p><small>{{ product.price }} грн</small></p>
+        </div>
+
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

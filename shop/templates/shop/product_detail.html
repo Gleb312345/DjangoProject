@@ -7,61 +7,82 @@
 
   <div class="row g-4 align-items-start">
 
-    <!-- LEFT: image ~40% -->
+    <!-- LEFT: image -->
     <div class="col-12 col-lg-5">
       <div class="ratio ratio-1x1 rounded overflow-hidden bg-dark">
         {% if product.images.all %}
           <img src="{{ product.images.all.0.image.url }}"
-               alt="{{ product.name }}"
                style="width:100%; height:100%; object-fit:cover;">
         {% else %}
           <img src="{% static 'img/default.jpg' %}"
-               alt="No image"
                style="width:100%; height:100%; object-fit:cover;">
         {% endif %}
       </div>
     </div>
 
-    <!-- RIGHT: price, description, buy -->
+    <!-- RIGHT -->
     <div class="col-12 col-lg-7">
-      <h2 class="mb-2">{{ product.name }}</h2>
+      <h2>{{ product.name }}</h2>
+
+      <!-- ⭐ СЕРЕДНІЙ РЕЙТИНГ -->
+      <p>Середній рейтинг: ⭐ {{ product.average_rating|floatformat:1 }}</p>
 
       <div class="fs-4 fw-bold mb-3">
         {{ product.price }} грн
       </div>
 
       {% if product.description %}
-        <p class="mb-4">{{ product.description }}</p>
+        <p>{{ product.description }}</p>
       {% endif %}
 
-      <button class="btn btn-success btn-lg" type="button" disabled>
-        Купити
-      </button>
+      <!-- 🛒 КНОПКА КОШИКА -->
+      <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">
+        Додати в кошик
+      </a>
     </div>
 
   </div>
 
-  <!-- REVIEWS -->
   <hr class="my-4">
 
-  <h4 class="mb-3">Відгуки</h4>
+  <!-- ✍️ ФОРМА ОЦІНКИ -->
+  <h4>Залишити відгук</h4>
 
-  {% if reviews %}
-    <div class="list-group">
-      {% for r in reviews %}
-        <div class="list-group-item">
-          <div class="d-flex justify-content-between">
-            <strong>Оцінка: {{ r.rating }}/5</strong>
-            <small class="text-muted">{{ r.created_at }}</small>
-          </div>
-          {% if r.text %}
-            <div class="mt-2">{{ r.text }}</div>
-          {% endif %}
-        </div>
-      {% endfor %}
+  <form method="POST">
+    {% csrf_token %}
+
+    <div class="mb-2">
+      <label>Оцінка:</label>
+      <select name="rating" class="form-control">
+        <option value="5">5</option>
+        <option value="4">4</option>
+        <option value="3">3</option>
+        <option value="2">2</option>
+        <option value="1">1</option>
+      </select>
     </div>
+
+    <div class="mb-2">
+      <textarea name="text" class="form-control" placeholder="Текст відгуку"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success">Відправити</button>
+  </form>
+
+  <hr class="my-4">
+
+  <!-- ВІДГУКИ -->
+  <h4>Відгуки</h4>
+
+  {% if product.reviews.all %}
+    {% for r in product.reviews.all %}
+      <div class="border p-2 mb-2">
+        ⭐ {{ r.rating }}/5 <br>
+        {{ r.text }}
+      </div>
+    {% endfor %}
   {% else %}
-    <p class="text-muted">Поки немає відгуків.</p>
+    <p>Немає відгуків</p>
   {% endif %}
 
 </div>

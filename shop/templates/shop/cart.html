@@ -1,0 +1,22 @@
+{% extends 'shop/base.html' %}
+
+{% block content %}
+
+<h2>Кошик</h2>
+
+{% if items %}
+  {% for item in items %}
+    <div>
+      {{ item.product.name }} — {{ item.quantity }} шт
+      ({{ item.product.price }} грн)
+    </div>
+  {% endfor %}
+
+  <hr>
+  <h4>Разом: {{ total }} грн</h4>
+
+{% else %}
+  <p>Кошик пустий</p>
+{% endif %}
+
+{% endblock %}
